@@ -15,16 +15,16 @@ def df_dx(x):
 
 # Main
 def main():
-    # print the graph of our function
-    # cf.print_graph(f, (0, 3), 1000)
+    # Print the graph of our function
+    cf.print_graph(f, (0, 3), 1000)
 
-    # calculate roots of the function f using iterative methods
+    # Calculate roots of the function f using iterative methods
     bisection_results = (it.bisection(f, 0.5, 1), it.bisection(f, 1.5, 2))
     newton_raphson_results = (it.newton_raphson(f, df_dx, 0.5), it.newton_raphson(f, df_dx, 1.5))
     secant_method_results = (it.secant(f, 0.5, 1), it.secant(f, 1.5, 2.5))
     print(secant_method_results)
     
-    # print the results
+    # Print the results
     print("Approximation of roots using:")
     print("1. Bisection method:")
     print(f"\ta. Root: {bisection_results[0][0]:.5f} Iterations needed: {bisection_results[0][1]}")

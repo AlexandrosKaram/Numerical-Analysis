@@ -17,7 +17,7 @@ def bisection(f, a, b, it=MAX_ITERATIONS):
 
     # Termination condition: Check if the root is at m 
     if abs(f(m)) < TOLERANCE:   
-        return m, MAX_ITERATIONS-it+1
+        return round(m, 5), MAX_ITERATIONS-it+1
     elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
         print("Bisection method fails.")
         return None
@@ -44,7 +44,7 @@ def newton_raphson(f, df_dx, x, it=MAX_ITERATIONS):
     """
     # Termination condition: Check if the root is at x
     if abs(f(x)) < TOLERANCE:  
-        return x, MAX_ITERATIONS-it+1
+        return round(x, 5), MAX_ITERATIONS-it+1
     elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
         print("Newton-Raphson method fails.")
         return None
