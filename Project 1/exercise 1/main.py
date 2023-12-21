@@ -18,12 +18,20 @@ def main():
     # print the graph of our function
     cf.print_graph(f, (0, 3), 1000)
 
-    # calculate function root using iterative methods
-    print("Root of f using:")
-    print("a. Bisection method:", it.bisection(f, 0, 3))
-    print("b. Newton-Raphson method:", it.newton_raphson(f, df_dx, 0))
+    # calculate roots of the function f using iterative methods
+    bisection_results = (it.bisection(f, 0.5, 1), it.bisection(f, 1.5, 2))
+    newton_raphson_results = (it.newton_raphson(f, df_dx, 0.5), it.newton_raphson(f, df_dx, 1.5))
+    
+    # print the results
+    print("Approximation of roots using:")
+    print("1. Bisection method:")
+    print(f"\ta. Root: {bisection_results[0][0]:.5f} Iterations needed: {bisection_results[0][1]}")
+    print(f"\tb. Root: {bisection_results[1][0]:.5f} Iterations needed: {bisection_results[1][1]}")
+    print("2. Newton-Raphson method:")
+    print(f"\ta. Root: {newton_raphson_results[0][0]:.5f} Iterations needed: {newton_raphson_results[0][1]}")
+    print(f"\tb. Root: {newton_raphson_results[1][0]:.5f} Iterations needed: {newton_raphson_results[1][1]}")
+    
 
 # call main
 if __name__ == "__main__":
     main()
-    
