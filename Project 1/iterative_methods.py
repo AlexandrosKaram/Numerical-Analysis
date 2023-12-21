@@ -77,10 +77,36 @@ def secant(f, a, b, it=MAX_ITERATIONS):
         # Check if root is at x
         if (abs(f(x_next)) <= TOLERANCE):
             return round(x_next, 5), MAX_ITERATIONS-it+1
-
+        elif (it <= 0):
+            print("Secant method does not converge in as many iterations.")
+            return None
+        
         xn_1 = xn
         xn = x_next
         it -= 1
 
-    print("Secant method does not converge in as many iterations.")
-    return None
+
+def newton_raphson2(f, df_dx, df2_dx2, x, it=MAX_ITERATIONS):
+    """ Approximation of the root of function f using a Newton-Raphson method variation
+
+        Parameters:
+            f (function): The function f.
+            df_dx (function): Derivative of f.
+            df2_dx2 (function): Second derivative of f.
+            x (int): Initial guess.
+            it (int): Maximum number of iterations till convergence
+
+        Returns:
+            tuple: Tuple containing the root approximation and the number of iterations executed.
+    """
+    # Termination condition: Check if the root is at x
+    if abs(f(x)) < TOLERANCE:  
+        return round(x, 5), MAX_ITERATIONS-it+1
+    elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
+        print("Newton-Raphson variation fails.")
+        return None
+
+    x_next = x - 1/(df_dx(x)/f(x) - 0.5*df2_dx2(x)/df_dx(x))   # Calculate next x by new formula
+
+    # Recursive step: call Newton Raphson with next guess, decrease iterations
+    return newton_raphson2(f, df_dx, x_next, it-1)
