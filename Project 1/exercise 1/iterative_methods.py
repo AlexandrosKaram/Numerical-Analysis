@@ -3,7 +3,7 @@ MAX_ITERATIONS = 100   # Maximum iterations to decide if method converges
 
 
 def bisection(f, a, b, it=MAX_ITERATIONS):
-    """ Approximation of the root of function f in the interval (a,b) using the Bisection method
+    """ Approximation of the root of function f in the interval [a,b] using the Bisection method.
 
         Parameters:
             f (function): The f function.
@@ -15,11 +15,12 @@ def bisection(f, a, b, it=MAX_ITERATIONS):
     """
     m = (a+b)/2   # Midpoint of the interval
 
-    # Termination condition: check if the root is at m or have reached the maximum number of iterations
+    # Termination condition: Check if the root is at m 
     if abs(f(m)) < TOLERANCE:   
         return m, MAX_ITERATIONS-it+1
-    elif it <= 0:
-        return None, MAX_ITERATIONS-it
+    elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
+        print("Bisection method fails.")
+        return None
     
     # Recursive step
     if (f(m)*f(a)<0):
@@ -31,7 +32,7 @@ def bisection(f, a, b, it=MAX_ITERATIONS):
 
 
 def newton_raphson(f, df_dx, x, it=MAX_ITERATIONS):
-    """ Aproximation of the root of function f using the Newton-Raphson method
+    """ Aproximation of the root of function f using the Newton-Raphson method.
 
         Parameters:
             f (function): The function f.
@@ -41,23 +42,45 @@ def newton_raphson(f, df_dx, x, it=MAX_ITERATIONS):
         Returns:
             tuple: Tuple containing the root approximation and the number of iterations executed
     """
-    # Termination condition: check if the root is at x or have reached the maximum number of iterations
+    # Termination condition: Check if the root is at x
     if abs(f(x)) < TOLERANCE:  
         return x, MAX_ITERATIONS-it+1
-    elif it <= 0:
-        return None, MAX_ITERATIONS-it
+    elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
+        print("Newton-Raphson method fails.")
+        return None
 
-    x_next = x - f(x)/df_dx(x)
+    x_next = x - f(x)/df_dx(x)   # Calculate next x by the Newton-Raphson formula
     # Recursive step: call Newton Raphson with next guess, decrease iterations
     return newton_raphson(f, df_dx, x_next, it-1)
 
 
-# approach of the root of function f in the interval (a,b) using the Secant method
-def secant(f, x0, x1):
-    x_next = x1 - (f(x1)*(x1-x0))/(f(x1)-f(x0))
-    # termination condition
-    if (abs(f(x_next)) < TOLERANCE):
-        return round(x_next, 5)
-    
-    # recursive step
-    return secant(f, x1, x_next)
+def secant(f, a, b, it=MAX_ITERATIONS):
+    """ Approximation of the root of function f in the interval [a,b] using the Secant method. 
+
+        Parameters:
+            f (function): The function f.
+            a (float): Lower boundary of range.
+            b (float): Upper boundary of range.
+            it (int): Maximum number of iterations till convergence.
+        Returns:
+            tuple: Tuple containing the root approximation and the number of iterations executed.
+    """
+    if f(a)*f(b) >= 0:
+        print("No root between this interval.")
+
+    # Execute Secant method
+    xn = b
+    xn_1 = a
+    while (True):
+        x_next = xn - f(xn)*(xn - xn_1)/(f(xn) - f(xn_1))
+
+        # Check if root is at x
+        if (abs(f(x_next)) <= TOLERANCE):
+            return round(x_next, 5), MAX_ITERATIONS-it+1
+
+        xn_1 = xn
+        xn = x_next
+        it -= 1
+
+    print("Secant method does not converge in as many iterations.")
+    return None
