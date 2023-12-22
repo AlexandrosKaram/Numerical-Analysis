@@ -1,4 +1,5 @@
 import function_graph as cf
+import iterative_methods as it
 
 
 # Define function f
@@ -19,7 +20,41 @@ def df2_dx2(x):
 # Main
 def main():
     # Display the graph of the function
-    cf.display_graph(f, (-2, 2), 20000)
+    # cf.display_graph(f, (-2, 2))
+
+    # Calculate roots for our function
+    bisection_2_results = (
+        it.bisection_2(f, -1.5, -1.3),
+        it.bisection_2(f, -0.7, -0.6),
+        it.bisection_2(f, 0.1, 0.3),
+        it.bisection_2(f, 0.4, 0.6),
+        it.bisection_2(f, 1.1, 1.2)
+    )
+
+    # print(bisection_2_results)
+
+    newton_raphson_2_results = (
+        it.newton_raphson_2(f, df_dx, df2_dx2, -1.4),
+        it.newton_raphson_2(f, df_dx, df2_dx2, -0.65),
+        it.newton_raphson_2(f, df_dx, df2_dx2, 0.15),
+        it.newton_raphson_2(f, df_dx, df2_dx2, 0.4),
+        it.newton_raphson_2(f, df_dx, df2_dx2, 1.15)
+    )
+
+    # print(newton_raphson_2_results)
+
+    secant_2_results = (
+        it.secant_2(f, -1.5, -1.4, -1.3),
+        it.secant_2(f, -7, -0.65, -0.6),
+        it.secant_2(f, 0.1, 0.2, 0.3),
+        it.secant_2(f, 0.43, 0.48, 0.53),
+        it.secant_2(f, 1.1, 1.15, 1.2)
+    )
+
+    print(secant_2_results)
+
+    # Print results
+    # print(bisection_2_results)
 
 
 # Call main

@@ -27,8 +27,7 @@ def bisection(f, a, b, it=MAX_ITERATIONS):
     if abs(f(m)) < TOLERANCE:   
         return round(m, 5), MAX_ITERATIONS-it+1
     elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
-        print("Bisection method fails.")
-        return None
+        return "Bisection method fails.", None
     
     # Recursive step
     if (f(m)*f(a)<0):
@@ -54,8 +53,7 @@ def newton_raphson(f, df_dx, x, it=MAX_ITERATIONS):
     if abs(f(x)) < TOLERANCE:  
         return round(x, 5), MAX_ITERATIONS-it+1
     elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
-        print("Newton-Raphson method fails.")
-        return None
+        return "Newton-Raphson method fails.", None
 
     x_next = x - f(x)/df_dx(x)   # Calculate next x by the Newton-Raphson formula
     # Recursive step: call Newton Raphson with next guess, decrease iterations
@@ -71,27 +69,23 @@ def secant(f, a, b, it=MAX_ITERATIONS):
             b (float): Upper boundary of range.
             it (int): Maximum number of iterations till convergence.
         Returns:
-            tuple: Tuple containing the root approximation and the number of iterations executed.
+            tuple: Tuple containing the root approximation or error message and the number of iterations executed.
     """
-    if f(a)*f(b) >= 0:
-        print("No root between this interval.")
-
     # Execute Secant method
     xn = b
     xn_1 = a
-    while (True):
+    while it>=0:
         x_next = xn - f(xn)*(xn - xn_1)/(f(xn) - f(xn_1))
 
         # Check if root is at x
         if (abs(f(x_next)) <= TOLERANCE):
             return round(x_next, 5), MAX_ITERATIONS-it+1
-        elif (it <= 0):
-            print("Secant method does not converge in as many iterations.")
-            return None
         
         xn_1 = xn
         xn = x_next
         it -= 1
+
+    return "Secant method fails.", None
 
 
 """
@@ -106,23 +100,22 @@ def newton_raphson_2(f, df_dx, df2_dx2, x, it=MAX_ITERATIONS):
             f (function): The function f.
             df_dx (function): Derivative of f.
             df2_dx2 (function): Second derivative of f.
-            x (int): Initial guess.
+            x (float): Initial guess.
             it (int): Maximum number of iterations till convergence
 
         Returns:
-            tuple: Tuple containing the root approximation and the number of iterations executed.
+            tuple: Tuple containing the root approximation or error message and the number of iterations executed.
     """
     # Termination condition: Check if the root is at x
     if abs(f(x)) < TOLERANCE:  
         return round(x, 5), MAX_ITERATIONS-it+1
     elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
-        print("Newton-Raphson variation fails.")
-        return None
+        return "Newton-Raphson method fails.", None
 
     x_next = x - 1/(df_dx(x)/f(x) - 0.5*df2_dx2(x)/df_dx(x))   # Calculate next x by new formula
 
     # Recursive step: call Newton Raphson with next guess, decrease iterations
-    return newton_raphson_2(f, df_dx, x_next, it-1)
+    return newton_raphson_2(f, df_dx, df2_dx2, x_next, it-1)
 
 
 def bisection_2(f, a, b, it=MAX_ITERATIONS):
@@ -134,24 +127,23 @@ def bisection_2(f, a, b, it=MAX_ITERATIONS):
             b (float): Upper boundary of range.
             it (int): Maximum number of iterations till convergence.        
         Returns:
-            tuple: Tuple containing the root approximation and the number of iterations executed.
+            tuple: Tuple containing the root approximation or error message and the number of iterations executed.
     """
-    m = random.uniform(a, b)   # Calculate m as random float within the limits
+    r = random.uniform(a, b)   # Calculate r as random float within the limits
 
     # Termination condition: Check if the root is at m 
-    if abs(f(m)) < TOLERANCE:   
-        return round(m, 5), MAX_ITERATIONS-it+1
+    if abs(f(r)) < TOLERANCE:   
+        return round(r, 5), MAX_ITERATIONS-it+1
     elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
-        print("Bisection method fails.")
-        return None
+        return "Bisection method fails.", None
     
     # Recursive step
-    if (f(m)*f(a)<0):
+    if f(a) * f(r) < 0:
         # Recur on the left half of the interval, decrease iterations
-        return bisection(f, a, m, it-1)
+        return bisection_2(f, a, r, it-1)
     else:
         # Recur on the right half of the interval, decrease iterations
-        return bisection(f, m, b, it-1)
+        return bisection_2(f, r, b, it-1)
     
 
 def secant_2(f, a, b, c, it=MAX_ITERATIONS):
@@ -164,27 +156,22 @@ def secant_2(f, a, b, c, it=MAX_ITERATIONS):
             c (float): Will be used as x3.
             it (int): Maximum number of iterations till convergence.
         Returns:
-            tuple: Tuple containing the root approximation and the number of iterations executed.
+            tuple: Tuple containing the root approximation or error message and the number of iterations executed.
     """
-    xnp2 = c
-    xnp1 = b
-    xn = a
+    x = [a, b, c]
 
-    while (True):
-        q = f(xn)/f(xnp1)
-        r = f(xnp2)/f(xnp1)
-        s = f(xnp2)/f(xn)
+    while (it>0):
+        q = f(x[0])/f(x[1])
+        r = f(x[2])/f(x[1])
+        s = f(x[2])/f(x[0])
 
-        xnp3 = (r*(r-q)*(xnp2 - xnp1) + (1 - r)*s*(xnp2 - xn))/((q-1)*(r-1)*(s-1))
+        x[3] = (r*(r-q)*(x[2] - x[1]) + (1 - r)*s*(x[2] - x[0]))/((q-1)*(r-1)*(s-1))
 
         # Check if root is at x
-        if (abs(f(xnp3)) <= TOLERANCE):
-            return round(xnp3, 5), MAX_ITERATIONS-it+1
-        elif (it <= 0):
-            print("Secant method does not converge in as many iterations.")
-            return None
+        if (abs(f(x[3])) <= TOLERANCE):
+            return round(x[3], 5), MAX_ITERATIONS-it+1
         
-        xn = xnp1
-        xnp1 = xnp2
-        xnp2 = xnp3
+        x = x[1:]   # Pop oldest element
         it -= 1
+    
+    return "Secant method fails.", None
