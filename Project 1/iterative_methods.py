@@ -165,7 +165,7 @@ def secant_2(f, a, b, c, it=MAX_ITERATIONS):
         r = f(x[2])/f(x[1])
         s = f(x[2])/f(x[0])
 
-        x[3] = (r*(r-q)*(x[2] - x[1]) + (1 - r)*s*(x[2] - x[0]))/((q-1)*(r-1)*(s-1))
+        x.append(x[2] - (r*(r-q)*(x[2] - x[1]) + (1 - r)*s*(x[2] - x[0]))/((q-1)*(r-1)*(s-1)))
 
         # Check if root is at x
         if (abs(f(x[3])) <= TOLERANCE):
