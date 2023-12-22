@@ -1,7 +1,13 @@
 import random
 
+
 TOLERANCE = 10**(-5)   # 5 decimal digit error tolerance 
 MAX_ITERATIONS = 100   # Maximum iterations to decide if method converges
+
+
+"""
+    Functions used in exercise 1
+"""
 
 
 def bisection(f, a, b, it=MAX_ITERATIONS):
@@ -88,6 +94,11 @@ def secant(f, a, b, it=MAX_ITERATIONS):
         it -= 1
 
 
+"""
+    Functions used in exercise 2
+"""
+
+
 def newton_raphson_2(f, df_dx, df2_dx2, x, it=MAX_ITERATIONS):
     """ Approximation of the root of function f using a Newton-Raphson method variation
 
@@ -141,3 +152,39 @@ def bisection_2(f, a, b, it=MAX_ITERATIONS):
     else:
         # Recur on the right half of the interval, decrease iterations
         return bisection(f, m, b, it-1)
+    
+
+def secant_2(f, a, b, c, it=MAX_ITERATIONS):
+    """ Approximation of the root of function f using a variation of the Secant method. 
+
+        Parameters:
+            f (function): The function f.
+            a (float): Will be used as x1.
+            b (float): Will be used as x2.
+            c (float): Will be used as x3.
+            it (int): Maximum number of iterations till convergence.
+        Returns:
+            tuple: Tuple containing the root approximation and the number of iterations executed.
+    """
+    xnp2 = c
+    xnp1 = b
+    xn = a
+
+    while (True):
+        q = f(xn)/f(xnp1)
+        r = f(xnp2)/f(xnp1)
+        s = f(xnp2)/f(xn)
+
+        xnp3 = (r*(r-q)*(xnp2 - xnp1) + (1 - r)*s*(xnp2 - xn))/((q-1)*(r-1)*(s-1))
+
+        # Check if root is at x
+        if (abs(f(xnp3)) <= TOLERANCE):
+            return round(xnp3, 5), MAX_ITERATIONS-it+1
+        elif (it <= 0):
+            print("Secant method does not converge in as many iterations.")
+            return None
+        
+        xn = xnp1
+        xnp1 = xnp2
+        xnp2 = xnp3
+        it -= 1
