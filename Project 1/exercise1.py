@@ -16,7 +16,7 @@ def df_dx(x):
 # Main
 def main():
     # Print the graph of our function
-    cf.print_graph(f, (0, 3), 1000)
+    cf.display_graph(f, (0, 3), 1000)
 
     # Calculate roots of the function f using iterative methods
     bisection_results = (it.bisection(f, 0.5, 1), it.bisection(f, 1.5, 2))

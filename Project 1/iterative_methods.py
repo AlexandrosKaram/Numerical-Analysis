@@ -1,3 +1,5 @@
+import random
+
 TOLERANCE = 10**(-5)   # 5 decimal digit error tolerance 
 MAX_ITERATIONS = 100   # Maximum iterations to decide if method converges
 
@@ -86,7 +88,7 @@ def secant(f, a, b, it=MAX_ITERATIONS):
         it -= 1
 
 
-def newton_raphson2(f, df_dx, df2_dx2, x, it=MAX_ITERATIONS):
+def newton_raphson_2(f, df_dx, df2_dx2, x, it=MAX_ITERATIONS):
     """ Approximation of the root of function f using a Newton-Raphson method variation
 
         Parameters:
@@ -109,4 +111,33 @@ def newton_raphson2(f, df_dx, df2_dx2, x, it=MAX_ITERATIONS):
     x_next = x - 1/(df_dx(x)/f(x) - 0.5*df2_dx2(x)/df_dx(x))   # Calculate next x by new formula
 
     # Recursive step: call Newton Raphson with next guess, decrease iterations
-    return newton_raphson2(f, df_dx, x_next, it-1)
+    return newton_raphson_2(f, df_dx, x_next, it-1)
+
+
+def bisection_2(f, a, b, it=MAX_ITERATIONS):
+    """ Approximation of the root of function f in the interval [a,b] using a Bisection method variation.
+
+        Parameters:
+            f (function): The f function.
+            a (float): Lower boundary of range.
+            b (float): Upper boundary of range.
+            it (int): Maximum number of iterations till convergence.        
+        Returns:
+            tuple: Tuple containing the root approximation and the number of iterations executed.
+    """
+    m = random.uniform(a, b)   # Calculate m as random float within the limits
+
+    # Termination condition: Check if the root is at m 
+    if abs(f(m)) < TOLERANCE:   
+        return round(m, 5), MAX_ITERATIONS-it+1
+    elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
+        print("Bisection method fails.")
+        return None
+    
+    # Recursive step
+    if (f(m)*f(a)<0):
+        # Recur on the left half of the interval, decrease iterations
+        return bisection(f, a, m, it-1)
+    else:
+        # Recur on the right half of the interval, decrease iterations
+        return bisection(f, m, b, it-1)

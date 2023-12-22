@@ -14,3 +14,14 @@ def df_dx(x):
 # Second derivative of f
 def df2_dx2(x):
     return 1620*x**4 + 900*x**3 - 1224*x**2 - 414*x + 70
+
+
+# Main
+def main():
+    # Display the graph of the function
+    cf.display_graph(f, (-2, 2), 20000)
+
+
+# Call main
+if __name__ == "__main__":
+    main()
