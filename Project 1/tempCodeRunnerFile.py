@@ -81,7 +81,7 @@ def print_results_diversity():
 
 
 def compare_variations_to_original(variation_results):
-    original_results = (
+    original_results = [
         (
             it.bisection(f, -1.4, -1.3),
             it.bisection(f, -0.7, -0.6),
@@ -103,32 +103,32 @@ def compare_variations_to_original(variation_results):
             it.secant(f, 0.46, 0.52),
             it.secant(f, 1.1, 1.2)
         )
-    )
+    ]
 
     variotion_times_better = 0
     original_times_better = 0
     equal = 0
     
-    for i, method in enumerate(original_results):
-        for j, result in enumerate(method):
-            if result[1] != None and variation_results[i][j][1] != None:
-                if result[1] < variation_results[i][j][1]:
+    for i, result in enumerate(original_results):
+        for j, a_result in enumerate(result):
+            if a_result != None and variation_results[i][j] != None:
+                if a_result[1] < variation_results[1]:
                     original_times_better += 1
-                elif result[1] == variation_results[i][j][1]:
+                elif a_result[1] == variation_results[1]:
                     equal += 1
                 else:
                     variotion_times_better += 1
 
     print(f"\nOut of {variotion_times_better + original_times_better + equal} results:")
-    print(f"Variation methods appeared faster {variotion_times_better} times.")
-    print(f"Original methods appeared faster {original_times_better} times.")
-    print(f"Both methods were equally fast {equal} times.\n")
+    print(f"\tVariation methods appeared faster {variotion_times_better} times.")
+    print(f"\tOriginal methods appeared faster {original_times_better} times.")
+    print(f"\tBoth methods were equally fast {equal} times.")
 
 
 # Main
 def main():
     # Display the graph of the function
-    cf.display_graph(f, (-2, 2))
+    # cf.display_graph(f, (-2, 2))
 
     # Calculate roots for our function
     results = calculate_results()

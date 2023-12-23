@@ -141,10 +141,11 @@ def bisection_2(f, a, b, it=MAX_ITERATIONS):
     if f(a) * f(r) < 0:
         # Recur on the left half of the interval, decrease iterations
         return bisection_2(f, a, r, it-1)
-    else:
+    elif f(b) * f(r) < 0:
         # Recur on the right half of the interval, decrease iterations
         return bisection_2(f, r, b, it-1)
-    
+    else:
+        return "Bisection method fails.", None
 
 def secant_2(f, a, b, c, it=MAX_ITERATIONS):
     """ Approximation of the root of function f using a variation of the Secant method. 
