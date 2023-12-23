@@ -20,8 +20,8 @@ def df2_dx2(x):
 # This function can be ignored
 def print_results(method_name, results):
     """Helper void function that prints results of our calculations."""
-    max_root_length = max(len(str(result[0])) for result in results if result[0] is not None)
-    max_iterations_length = max(len(str(result[1])) if result[1] is not None else 0 for result in results)
+    max_root_length = max(len(str(result[0])) for result in results)
+    max_iterations_length = max(len(str(result[1])) for result in results)
 
     print(f"{method_name}:")
     for i, result in enumerate(results, start=1):
@@ -29,7 +29,7 @@ def print_results(method_name, results):
         if iterations is not None:
             print(f"\tRoot {i}:\t{root:>{max_root_length}} | Iterations executed: {iterations:>{max_iterations_length}}")
         else:
-            print(f"\tRoot {i}:\t{root} | {iterations}")
+            print(f"\tRoot {i}:\t{root:>{max_root_length}} | Iterations executed: Maximum")
 
 
 def calculate_results():
@@ -119,7 +119,7 @@ def compare_variations_to_original(variation_results):
                 else:
                     variotion_times_better += 1
 
-    print(f"\nOut of {variotion_times_better + original_times_better + equal} results:")
+    print(f"\nOut of {variotion_times_better + original_times_better + equal} results tested:")
     print(f"Variation methods appeared faster {variotion_times_better} times.")
     print(f"Original methods appeared faster {original_times_better} times.")
     print(f"Both methods were equally fast {equal} times.\n")
@@ -128,7 +128,7 @@ def compare_variations_to_original(variation_results):
 # Main
 def main():
     # Display the graph of the function
-    cf.display_graph(f, (-2, 2))
+    # cf.display_graph(f, (-2, 2))
 
     # Calculate roots for our function
     results = calculate_results()

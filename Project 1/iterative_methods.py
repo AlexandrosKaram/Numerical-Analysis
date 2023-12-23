@@ -27,7 +27,7 @@ def bisection(f, a, b, it=MAX_ITERATIONS):
     if abs(f(m)) < TOLERANCE:   
         return round(m, 5), MAX_ITERATIONS-it+1
     elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
-        return "Bisection method fails.", None
+        return "Fail", None
     
     # Recursive step
     if (f(m)*f(a)<0):
@@ -53,7 +53,7 @@ def newton_raphson(f, df_dx, x, it=MAX_ITERATIONS):
     if abs(f(x)) < TOLERANCE:  
         return round(x, 5), MAX_ITERATIONS-it+1
     elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
-        return "Newton-Raphson method fails.", None
+        return "Fail", None
 
     x_next = x - f(x)/df_dx(x)   # Calculate next x by the Newton-Raphson formula
     # Recursive step: call Newton Raphson with next guess, decrease iterations
@@ -85,7 +85,7 @@ def secant(f, a, b, it=MAX_ITERATIONS):
         xn = x_next
         it -= 1
 
-    return "Secant method fails.", None
+    return "Fail", None
 
 
 """
@@ -110,7 +110,7 @@ def newton_raphson_2(f, df_dx, df2_dx2, x, it=MAX_ITERATIONS):
     if abs(f(x)) < TOLERANCE:  
         return round(x, 5), MAX_ITERATIONS-it+1
     elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
-        return "Newton-Raphson method fails.", None
+        return "Fail", None
 
     x_next = x - 1/(df_dx(x)/f(x) - 0.5*df2_dx2(x)/df_dx(x))   # Calculate next x by new formula
 
@@ -135,7 +135,7 @@ def bisection_2(f, a, b, it=MAX_ITERATIONS):
     if abs(f(r)) < TOLERANCE:   
         return round(r, 5), MAX_ITERATIONS-it+1
     elif it <= 0:   # Fail condition: Check if maximum number of iterations are reached
-        return "Bisection method fails.", None
+        return "Fail", None
     
     # Recursive step
     if f(a) * f(r) < 0:
@@ -145,7 +145,7 @@ def bisection_2(f, a, b, it=MAX_ITERATIONS):
         # Recur on the right half of the interval, decrease iterations
         return bisection_2(f, r, b, it-1)
     else:
-        return "Bisection method fails.", None
+        return "Fail", None
 
 def secant_2(f, a, b, c, it=MAX_ITERATIONS):
     """ Approximation of the root of function f using a variation of the Secant method. 
@@ -175,4 +175,4 @@ def secant_2(f, a, b, c, it=MAX_ITERATIONS):
         x = x[1:]   # Pop oldest element
         it -= 1
     
-    return "Secant method fails.", None
+    return "Fail", None
