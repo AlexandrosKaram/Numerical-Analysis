@@ -116,3 +116,14 @@ def solve_linear_system(A, b):
         x[i] = round(x[i], 2)
 
     return x
+
+
+def cholesky(A):
+    """Function that receives a matrix A and returns its decomposed L version/
+    
+        Parameters:
+            A (list[list]): The matrix.
+
+        Returns:
+            (list[list]): The decomposed lower triangular matrix.
+    """
