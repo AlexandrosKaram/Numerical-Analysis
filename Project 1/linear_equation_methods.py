@@ -6,18 +6,31 @@ import copy
 
 
 def initialize_matrix(n):
-    """Initialize a matrix of size n with zeros"""
+    """Initialize a matrix of size nxn with zeros."""
     return [[0] * n for _ in range(n)]
 
 
+def round_matrix(A):
+    """Round a matrix's values to the 2nd decimal digit."""
+    for i in range(len(A)):
+        for j in range(len(A[i])):
+            A[i][j] = round(A[i][j], 2)
+
+
 def print_matrix(A):
-    """Prints a matrix"""
+    """Prints a matrix."""
     for row in A:
-        print(row)
+        print("[", end="")
+        for i, element in enumerate(row):
+            if i < len(row) - 1:
+                print(f"{element}\t", end="")
+            else:
+                print(element, end="")
+        print("]")
 
 
 def swap_rows(matrix, r1, r2):
-    """Swaps two rows a matrix and returns the updated matrix"""
+    """Swaps two rows a matrix and returns the updated matrix."""
     temp_matrix = []
     for row in matrix:
         if row == matrix[r1]:
@@ -127,3 +140,20 @@ def cholesky(A):
         Returns:
             (list[list]): The decomposed lower triangular matrix.
     """
+    n = len(A)
+    # Lower triangular matrix
+    L = initialize_matrix(n)
+
+    # Execute Cholesky
+    for i in range(n):
+        for j in range(i+1):
+            if i == j:   # Main diagonal
+                s = sum(pow(L[j][k],2) for k in range(j))
+                L[j][j] = pow((A[j][j] - s),1/2);
+            else:   # Elements below main diagonal
+                s = sum(L[i][k] * L[j][k] for k in range(j))
+                if L[j][j] > 0:
+                    L[i][j] = (A[i][j] - s) / L[j][j];
+
+    round_matrix(L)
+    return L
