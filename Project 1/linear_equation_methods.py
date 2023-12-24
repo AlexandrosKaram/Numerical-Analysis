@@ -4,6 +4,8 @@ import copy
     Methods used in exercise 3.
 """
 
+TOLERANCE = 10 ** (-4)
+
 
 def initialize_matrix(n):
     """Initialize a matrix of size nxn with zeros."""
@@ -164,5 +166,35 @@ def infinity_norm(A):
     return max(sum(abs(A[i][j]) for j in range(len(A[0]))) for i in range(len(A)))
 
 
-def gauss_seidel(A):
-    """Function that executes the Gauss-Seidel algorithm."""
+def gauss_seidel(A, b, max_iterations=1000):
+    """Function that executes the Gauss-Seidel method.
+
+    Parameters:
+        A (list[list]): The matrix.
+        b (list): The vector matrix.
+        max_iterations (int): Maximum iterations till method fails.
+    Returns:
+        list: The solution x.
+    """
+    n = len(A)
+    x = [0] * n  # Initial guess of x (0)
+    old_norm = 0
+    iterations = 0  # Count iterations to prevent infinite loop
+
+    # Execute Gauss-Seidel
+    while iterations < max_iterations:
+        # Calculate new x vector
+        for i in range(n):
+            s = sum(A[i][j] * x[j] for j in range(n) if j != i)
+            x[i] = (b[i] - s) / A[i][i]
+        new_norm = max(
+            abs(x[i]) for i in range(len(x))
+        )  # Calculate infinity norm as maximum absolute value of x
+        # Check if converged
+        if abs(new_norm - old_norm) < TOLERANCE:
+            return [round(x[i], 4) for i in range(len(x))]
+        old_norm = new_norm  # Replace old norm with new norm
+        iterations += 1
+
+    # Iterations have surpassed maximum limit
+    return "Gauss-Seidel method fails."
