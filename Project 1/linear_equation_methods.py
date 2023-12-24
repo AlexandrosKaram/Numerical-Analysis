@@ -46,45 +46,45 @@ def swap_rows(matrix, r1, r2):
 def lu_decomposition(A):
     """Function that receives a matrix and returns the respective P L and U matrices.
 
-        Parameters:
-            A (list): The array to be decomposed.
+    Parameters:
+        A (list): The array to be decomposed.
 
-        Returns:
-            P (list): The Permutation matrix.
-            L (list): The Lower matrix.
-            U (list): The upper matrix.
+    Returns:
+        P (list): The Permutation matrix.
+        L (list): The Lower matrix.
+        U (list): The upper matrix.
     """
     n = len(A)
 
     # Initialize P, L matrices
     P = initialize_matrix(n)
     L = initialize_matrix(n)
-    
+
     # Put ones in main diagonal of P, L
     for i in range(n):
         P[i][i] = 1
         L[i][i] = 1
 
     # Execute pivoting
-    for j in range(n-1):
+    for j in range(n - 1):
         max_value = abs(A[j][j])
         pivot_row = j
-        for i in range(j+1, n):
+        for i in range(j + 1, n):
             if abs(A[i][j]) > max_value:
-                max_value = abs(A[i][j])    
-                A = swap_rows(A, pivot_row, i) 
+                max_value = abs(A[i][j])
+                A = swap_rows(A, pivot_row, i)
                 P = swap_rows(P, pivot_row, i)
-    
+
     # Copy edited A to U
     U = copy.deepcopy(A)
 
     # Execute Gaussian elimination
-    for j in range(n-1):
-        for i in range(j+1, n):
-            x = -U[i][j]/U[j][j]
+    for j in range(n - 1):
+        for i in range(j + 1, n):
+            x = -U[i][j] / U[j][j]
             L[i][j] = -x
             for k in range(n):
-                U[i][k] = U[i][k] + x*U[j][k]
+                U[i][k] = U[i][k] + x * U[j][k]
 
     return P, L, U
 
@@ -92,16 +92,16 @@ def lu_decomposition(A):
 def solve_linear_system(A, b):
     """Solve a linear system Ax = b and calculate the solution vector x.
 
-        Parameters:
-            A (list[list]): Coefficient matrix.
-            b (list): Right-hand side vector.
+    Parameters:
+        A (list[list]): Coefficient matrix.
+        b (list): Right-hand side vector.
 
-        Returns:
-            list: Solution vector x.
+    Returns:
+        list: Solution vector x.
     """
     P, L, U = lu_decomposition(A)
-    
-    b_prime = []   # b'
+
+    b_prime = []  # b'
 
     # Solve Pb = b'
     for row in P:
@@ -122,7 +122,7 @@ def solve_linear_system(A, b):
         for j in range(i + 1, len(U[0])):
             # Back subtitution step
             x[i] -= U[i][j] * x[j]
-        # Divide by diagonal element 
+        # Divide by diagonal element
         x[i] /= U[i][i]
 
     for i in range(len(x)):
@@ -133,12 +133,12 @@ def solve_linear_system(A, b):
 
 def cholesky(A):
     """Function that receives a matrix A and returns its decomposed L version/
-    
-        Parameters:
-            A (list[list]): The matrix.
 
-        Returns:
-            (list[list]): The decomposed lower triangular matrix.
+    Parameters:
+        A (list[list]): The matrix.
+
+    Returns:
+        (list[list]): The decomposed lower triangular matrix.
     """
     n = len(A)
     # Lower triangular matrix
@@ -146,14 +146,14 @@ def cholesky(A):
 
     # Execute Cholesky
     for i in range(n):
-        for j in range(i+1):
-            if i == j:   # Main diagonal
-                s = sum(pow(L[j][k],2) for k in range(j))
-                L[j][j] = pow((A[j][j] - s),1/2);
-            else:   # Elements below main diagonal
+        for j in range(i + 1):
+            if i == j:  # Main diagonal
+                s = sum(pow(L[j][k], 2) for k in range(j))
+                L[j][j] = pow((A[j][j] - s), 1 / 2)
+            else:  # Elements below main diagonal
                 s = sum(L[i][k] * L[j][k] for k in range(j))
                 if L[j][j] > 0:
-                    L[i][j] = (A[i][j] - s) / L[j][j];
+                    L[i][j] = (A[i][j] - s) / L[j][j]
 
     round_matrix(L)
     return L
@@ -162,3 +162,7 @@ def cholesky(A):
 def infinity_norm(A):
     """Function to receive a matrix and calculate its infinite norm."""
     return max(sum(abs(A[i][j]) for j in range(len(A[0]))) for i in range(len(A)))
+
+
+def gauss_seidel(A):
+    """Function that executes the Gauss-Seidel algorithm."""
