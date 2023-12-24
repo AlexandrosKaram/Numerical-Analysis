@@ -157,3 +157,8 @@ def cholesky(A):
 
     round_matrix(L)
     return L
+
+
+def infinity_norm(A):
+    """Function to receive a matrix and calculate its infinite norm."""
+    return max(sum(abs(A[i][j]) for j in range(len(A[0]))) for i in range(len(A)))
