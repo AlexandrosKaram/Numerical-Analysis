@@ -1,10 +1,8 @@
 from linear_equation_methods import initialize_matrix
 from copy import deepcopy
 
-q = 0.15   # Probability of moving to a page
 
-
-def create_google_matrix(A):
+def create_google_matrix(A, q=0.15):
     """Function that receives Adjacency matrix and creates Google matrix."""
     n = len(A)
     G = initialize_matrix(n)   # Initialize Google matrix with zeros
@@ -65,6 +63,16 @@ def power_method(A, epsilon = 0.00001, max_iterations = 100):
     return None
 
 
+def print_page_dynamic(G, eigenvector):
+    """Helper function that parallel sorts the index of the pages and the page ranks and prints the results."""
+    page_index = [i for i in range(len(G))]
+    pairs = list(zip(eigenvector, page_index))   # Merge lists to parallel sort
+    sorted_pairs = sorted(pairs, key=lambda x: x[0], reverse=True)   # Sort in respect of eigenvector values
+    print("\nThese are the most important pages in order:\n")
+    for pair in sorted_pairs:
+        print(f"\tPage {pair[1]}: {pair[0]:.4f}")
+
+
 # Main
 def main():
     # Αdjacency matrix
@@ -88,6 +96,7 @@ def main():
 
     # Exercise 4a
     n = len(A)
+    q = 0.15
     for j in range(n):
         nj = sum(A[j][i] for i in range(n))   # Sum of connections to j
         s = 0
@@ -105,12 +114,8 @@ def main():
     print(f"\nAs we can see the Eigenvector is the one we expected:\n{eigenvector}")
 
     # Check which pages are the most important
-    page_index = [i for i in range(len(A))]
-    pairs = list(zip(eigenvector, page_index))   # Merge lists to sort
-    sorted_pairs = sorted(pairs, key=lambda x: x[0], reverse=True)   # Sort in respect of eigenvector values
-    print("\nThese are the most important pages in order:")
-    for pair in sorted_pairs:
-        print(f"Page {pair[1]}: {pair[0]:.4f}")
+    print("\nThese are the most important pages in order:\n")
+    print_page_dynamic(G, eigenvector)
 
     # Exercise 4c
     A_2 = [
@@ -124,7 +129,7 @@ def main():
         [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
         [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0],
@@ -134,6 +139,31 @@ def main():
         [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
 
+    standard_derivation = []
+
+    G_2 = create_google_matrix(A_2)
+    eigenvector_2 = power_method(G_2)
+
+    # Print new results
+    print("\nAfter updating the A matrix, we can now see that the dynamic in the rankings has changed.")
+    print_page_dynamic(G_2, eigenvector_2)
+    print("\nWe have succesfully shifted the dynamic of 'Page 0' as from the second to last position it is now the most important page.")
+    print("That was the result of adding pages pointing the the 'Page 0' but also importantly to 'Page 3' (which is pointing to 'Page 0').")
+    print("However, the success of our experiment is also due to the fact that the favored pages of the previous rankings (12, 13, 14) are pointing to our new pages.\n")
+
+    # Exercise 4d
+    print("\nAfter changing q to 0.02 from 0.15 we can see the following differences:\n")
+    G_2 = create_google_matrix(A_2, 0.02)
+    eigenvector_2 = power_method(G_2)
+    print_page_dynamic(G_2, eigenvector_2)
+
+    print("\nAfter changing q to 0.6 from 0.02 we can see the following differences:\n")
+    G_2 = create_google_matrix(A_2, 0.6)
+    eigenvector_2 = power_method(G_2)
+    print_page_dynamic(G_2, eigenvector_2)
+
+    # Observation
+    print("")
 
 
 # Call main
