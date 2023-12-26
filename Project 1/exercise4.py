@@ -1,4 +1,5 @@
 from linear_equation_methods import print_matrix, round_matrix, initialize_matrix
+from random import uniform
 
 q = 0.15   # Probability of moving to a page
 n = 15   # Total pages
@@ -14,6 +15,35 @@ def create_google_matrix(A):
             G[i][j] = q/n + A[j][i]*(1-q)/nj
     
     return G
+
+
+def multiply_matrix_with_vector(A, b):
+    """Function that multiplies a Matrix with a Vector.
+    
+    Parameters:
+        A (list[list]): The matrix
+        b (list): The vector
+    
+    Returns:
+        (list): The new vector
+    """
+    return [sum(A[i][j] * b[j] for j in range(len(b))) for i in range(len(A))]
+
+
+def power_method(A):
+    """Function that executes the power method.
+    
+    Parameters:
+        A (list[list]): The matrix we want to execute the power method with.
+    
+    Returns:
+        (list): The eigenvector of the maximum eigenvalue
+    """
+    b = [uniform(0, 2) for i in range(n)]   # Base random vector
+
+    for i in range(n):
+        b = multiply_matrix_with_vector()
+
 
 # Main
 def main():
@@ -50,7 +80,7 @@ def main():
 
     # Exercise 4b
     G = create_google_matrix(A)
-
+    
 
 # Call main
 if __name__ == "__main__":
