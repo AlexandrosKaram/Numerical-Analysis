@@ -31,31 +31,38 @@ def multiply_matrix_with_vector(A, b):
 
 
 def normalize_vector(b):
-    """Function divide each element with the first non-zero element of the vector."""
-    for i in range(len(b)):
-        if b[i] != 0:
-            return [b[j]/b[i] for j in range(len(b))]
-
-    print("Error")
-    return b
+    """Function to normalize a vector."""
+    s = sum(b)
+    return [b[i]/s for i in range(len(b))]
 
 
-def power_method(A):
+def vector_infinity_norm(b):
+    return max(abs(b[i]) for i in range(len(b)))
+
+
+def power_method(A, epsilon = 0.00002, max_iterations = 100):
     """Function that executes the power method.
     
     Parameters:
         A (list[list]): The matrix we want to execute the power method with.
     
     Returns:
-        (list): The eigenvector of the maximum eigenvalue
+        (list): The eigenvector of the maximum eigenvalue.
     """
-    b = [1]*len(A[0])  # Base vector of 1's
+    b = [1] * len(A[0])  # Base vector of 1's
 
-    for i in range(len(A[0])):
-        b = multiply_matrix_with_vector(A, b)
-        b = normalize_vector(b)
-
-    return b
+    # Execute power method
+    for i in range(max_iterations):
+        b_new = multiply_matrix_with_vector(A, b)
+        b_new = normalize_vector(b_new)
+        # Check if power method is over
+        if (abs(vector_infinity_norm(b) - vector_infinity_norm(b_new)) < epsilon):
+            return b
+        b = b_new   # Replace old b with the new one
+    
+    # Surpassed maximum iterations
+    print("Power method fails.")
+    return None
 
 
 # Main
@@ -94,6 +101,7 @@ def main():
     # Exercise 4b
     G = create_google_matrix(A)
     eigenvector = power_method(G)
+    print(eigenvector)
 
 
 # Call main

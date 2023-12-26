@@ -1,1 +1,1 @@
-b[j]/b[k] for j in range(len(b))
+n
