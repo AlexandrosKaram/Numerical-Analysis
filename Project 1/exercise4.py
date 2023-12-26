@@ -30,6 +30,16 @@ def multiply_matrix_with_vector(A, b):
     return [sum(A[i][j] * b[j] for j in range(len(b))) for i in range(len(A))]
 
 
+def normalize_vector(b):
+    """Function divide each element with the first non-zero element of the vector."""
+    for i in range(len(b)):
+        if b[i] != 0:
+            return [b[j]/b[i] for j in range(len(b))]
+
+    print("Error")
+    return b
+
+
 def power_method(A):
     """Function that executes the power method.
     
@@ -39,14 +49,11 @@ def power_method(A):
     Returns:
         (list): The eigenvector of the maximum eigenvalue
     """
-    b = [randrange(0, 10) for i in range(len(A[0]))]   # Base random vector
+    b = [1]*len(A[0])  # Base vector of 1's
 
-    for i in range(len(A)):
+    for i in range(len(A[0])):
         b = multiply_matrix_with_vector(A, b)
-        for k in range(len(A)):   # Loop until we find non-zero element of b
-            if b[k] != 0:
-                b = [b[j]/b[k] for j in range(len(b))]
-                break
+        b = normalize_vector(b)
 
     return b
 
@@ -86,7 +93,7 @@ def main():
 
     # Exercise 4b
     G = create_google_matrix(A)
-    print(power_method([[2, 1], [3, 2]]))
+    eigenvector = power_method(G)
 
 
 # Call main
