@@ -1,13 +1,13 @@
-from linear_equation_methods import print_matrix, round_matrix, initialize_matrix
-from random import randrange
+from linear_equation_methods import initialize_matrix
+from copy import deepcopy
 
 q = 0.15   # Probability of moving to a page
-n = 15   # Total pages
 
 
 def create_google_matrix(A):
     """Function that receives Adjacency matrix and creates Google matrix."""
-    G = initialize_matrix(15)   # Initialize 15x15 Google matrix with zeros
+    n = len(A)
+    G = initialize_matrix(n)   # Initialize Google matrix with zeros
 
     for j in range(n):
         nj = sum(A[j][i] for i in range(n))
@@ -40,7 +40,7 @@ def vector_infinity_norm(b):
     return max(abs(b[i]) for i in range(len(b)))
 
 
-def power_method(A, epsilon = 0.00002, max_iterations = 100):
+def power_method(A, epsilon = 0.00001, max_iterations = 100):
     """Function that executes the power method.
     
     Parameters:
@@ -87,6 +87,7 @@ def main():
     ]
 
     # Exercise 4a
+    n = len(A)
     for j in range(n):
         nj = sum(A[j][i] for i in range(n))   # Sum of connections to j
         s = 0
@@ -100,8 +101,39 @@ def main():
 
     # Exercise 4b
     G = create_google_matrix(A)
-    eigenvector = power_method(G)
-    print(eigenvector)
+    eigenvector = power_method(G)   # Calculate the eigenvector by the power method
+    print(f"\nAs we can see the Eigenvector is the one we expected:\n{eigenvector}")
+
+    # Check which pages are the most important
+    page_index = [i for i in range(len(A))]
+    pairs = list(zip(eigenvector, page_index))   # Merge lists to sort
+    sorted_pairs = sorted(pairs, key=lambda x: x[0], reverse=True)   # Sort in respect of eigenvector values
+    print("\nThese are the most important pages in order:")
+    for pair in sorted_pairs:
+        print(f"Page {pair[1]}: {pair[0]:.4f}")
+
+    # Exercise 4c
+    A_2 = [
+        [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0],
+        [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+
 
 
 # Call main
