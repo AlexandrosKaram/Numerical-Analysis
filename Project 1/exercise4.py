@@ -1,5 +1,5 @@
 from linear_equation_methods import print_matrix, round_matrix, initialize_matrix
-from random import uniform
+from random import randrange
 
 q = 0.15   # Probability of moving to a page
 n = 15   # Total pages
@@ -39,10 +39,16 @@ def power_method(A):
     Returns:
         (list): The eigenvector of the maximum eigenvalue
     """
-    b = [uniform(0, 2) for i in range(n)]   # Base random vector
+    b = [randrange(0, 10) for i in range(len(A[0]))]   # Base random vector
 
-    for i in range(n):
-        b = multiply_matrix_with_vector()
+    for i in range(len(A)):
+        b = multiply_matrix_with_vector(A, b)
+        for k in range(len(A)):   # Loop until we find non-zero element of b
+            if b[k] != 0:
+                b = [b[j]/b[k] for j in range(len(b))]
+                break
+
+    return b
 
 
 # Main
@@ -80,7 +86,8 @@ def main():
 
     # Exercise 4b
     G = create_google_matrix(A)
-    
+    print(power_method([[2, 1], [3, 2]]))
+
 
 # Call main
 if __name__ == "__main__":
