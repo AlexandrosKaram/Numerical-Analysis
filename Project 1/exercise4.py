@@ -1,5 +1,6 @@
 from linear_equation_methods import initialize_matrix
 from copy import deepcopy
+from statistics import stdev
 
 
 def create_google_matrix(A, q=0.15):
@@ -139,10 +140,11 @@ def main():
         [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
 
-    standard_derivation = []
+    standard_deviation = []
 
     G_2 = create_google_matrix(A_2)
     eigenvector_2 = power_method(G_2)
+    standard_deviation.append(stdev(eigenvector_2))
 
     # Print new results
     print("\nAfter updating the A matrix, we can now see that the dynamic in the rankings has changed.")
@@ -155,15 +157,23 @@ def main():
     print("\nAfter changing q to 0.02 from 0.15 we can see the following differences:\n")
     G_2 = create_google_matrix(A_2, 0.02)
     eigenvector_2 = power_method(G_2)
+    standard_deviation.append(stdev(eigenvector_2))
     print_page_dynamic(G_2, eigenvector_2)
 
     print("\nAfter changing q to 0.6 from 0.02 we can see the following differences:\n")
     G_2 = create_google_matrix(A_2, 0.6)
     eigenvector_2 = power_method(G_2)
+    standard_deviation.append(stdev(eigenvector_2))
     print_page_dynamic(G_2, eigenvector_2)
 
     # Observation
-    print("")
+    print("\nFrom the results above and the help of standard deviation we make the following observation.")
+    print(f"\tq=0.02, standard deviation={standard_deviation[1]:.4f}")
+    print(f"\tq=0.15, standard deviation={standard_deviation[0]:.4f}")
+    print(f"\tq=0.6, standard deviation={standard_deviation[2]:.4f}")
+    print("The higher the value of 'q' is, the less relevant is the page rank system. This is due to the fact that")
+    print("the number of connections each page has gets less important, as there are more chances of randomly selecting")
+    print("the page than being led to it by another page.\n")
 
 
 # Call main
