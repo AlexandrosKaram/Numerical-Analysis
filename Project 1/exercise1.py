@@ -28,8 +28,8 @@ def main():
     # Calculate roots of the function f using iterative methods
     bisection_results = (it.bisection(f, 0.5, 1), it.bisection(f, 1.5, 2))
     newton_raphson_results = (
-        it.newton_raphson(f, df_dx, 0.5),
-        it.newton_raphson(f, df_dx, 1.5),
+        it.newton_raphson(f, df_dx, 0.5, print_convergence=True),
+        it.newton_raphson(f, df_dx, 1.5, print_convergence=True),
     )
     secant_method_results = (it.secant(f, 0.5, 1), it.secant(f, 1.5, 2.5))
 

@@ -1,4 +1,4 @@
-from linear_equation_methods import initialize_matrix
+from linear_equation_methods import initialize_matrix, print_matrix
 from copy import deepcopy
 from statistics import stdev
 
@@ -96,6 +96,7 @@ def main():
     ]
 
     # Exercise 4a
+    print("\nExercise 4a")
     n = len(A)
     q = 0.15
     for j in range(n):
@@ -110,15 +111,16 @@ def main():
         print("Google matrix indeed is stochastic.")
 
     # Exercise 4b
+    print("\nExercise 4b")
     G = create_google_matrix(A)
     eigenvector = power_method(G)   # Calculate the eigenvector by the power method
     print(f"\nAs we can see the Eigenvector is the one we expected:\n{eigenvector}")
 
     # Check which pages are the most important
-    print("\nThese are the most important pages in order:\n")
     print_page_dynamic(G, eigenvector)
 
     # Exercise 4c
+    print("\nExercise 4c")
     A_2 = [
         [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -154,6 +156,7 @@ def main():
     print("However, the success of our experiment is also due to the fact that the favored pages of the previous rankings (12, 13, 14) are pointing to our new pages.\n")
 
     # Exercise 4d
+    print("\nExercise 4d")
     print("\nAfter changing q to 0.02 from 0.15 we can see the following differences:\n")
     G_2 = create_google_matrix(A_2, 0.02)
     eigenvector_2 = power_method(G_2)
@@ -174,6 +177,31 @@ def main():
     print("The higher the value of 'q' is, the less relevant is the page rank system. This is due to the fact that")
     print("the number of connections each page has gets less important, as there are more chances of randomly selecting")
     print("the page than being led to it by another page.\n")
+
+    # Exercise 4e
+    print("\nExercise 4e")
+    print("Reminder of page dynamic of our starter matrix.")
+    print_page_dynamic(G, eigenvector)
+    print("After changing A[7][10] and A[11][10] to '3',")
+    A[7][10] = A[11][10] = 3
+    G = create_google_matrix(A)
+    eigenvector = power_method(G)
+    print_page_dynamic(G, eigenvector)
+    print("We can clearly see that the 11th page has now surpassed the 10th page's dynamic.")
+
+    # Exercise 4f
+    print("\nExercise 4f")
+    print("After deleting page 10 (A[9])")
+    # Remove page 10
+    connections_from_page_10 = A.pop(9)
+    print(connections_from_page_10)
+    for i in range(len(A)):
+        A[i].pop(9)
+    
+    print_matrix(A)
+
+    G = create_google_matrix(A)
+    new_eigenvector = power_method(G)    
 
 
 # Call main
