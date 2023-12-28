@@ -64,14 +64,14 @@ def power_method(A, epsilon = 0.00001, max_iterations = 100):
     return None
 
 
-def print_page_dynamic(G, eigenvector):
+def print_page_dynamic(eigenvector):
     """Helper function that parallel sorts the index of the pages and the page ranks and prints the results."""
-    page_index = [i for i in range(len(G))]
+    page_index = [i for i in range(len(eigenvector))]
     pairs = list(zip(eigenvector, page_index))   # Merge lists to parallel sort
     sorted_pairs = sorted(pairs, key=lambda x: x[0], reverse=True)   # Sort in respect of eigenvector values
     print("\nThese are the most important pages in order:\n")
     for pair in sorted_pairs:
-        print(f"\tPage {pair[1]}: {pair[0]:.4f}")
+        print(f"\tPage {pair[1]+1}: {pair[0]:.4f}")
 
 
 # Main
@@ -117,7 +117,7 @@ def main():
     print(f"\nAs we can see the Eigenvector is the one we expected:\n{eigenvector}")
 
     # Check which pages are the most important
-    print_page_dynamic(G, eigenvector)
+    print_page_dynamic(eigenvector)
 
     # Exercise 4c
     print("\nExercise 4c")
@@ -150,10 +150,10 @@ def main():
 
     # Print new results
     print("\nAfter updating the A matrix, we can now see that the dynamic in the rankings has changed.")
-    print_page_dynamic(G_2, eigenvector_2)
-    print("\nWe have succesfully shifted the dynamic of 'Page 0' as from the second to last position it is now the most important page.")
-    print("That was the result of adding pages pointing the the 'Page 0' but also importantly to 'Page 3' (which is pointing to 'Page 0').")
-    print("However, the success of our experiment is also due to the fact that the favored pages of the previous rankings (12, 13, 14) are pointing to our new pages.\n")
+    print_page_dynamic(eigenvector_2)
+    print("\nWe have succesfully shifted the dynamic of Page 1 (A[0]) as from the second to last position it is now the most important page.")
+    print("That was the result of adding pages pointing the the Page 1 but also importantly to Page 4 (which is pointing to Page 1).")
+    print("However, the success of our experiment is also due to the fact that the favored pages of the previous rankings (13, 14, 15) are pointing to our new pages.\n")
 
     # Exercise 4d
     print("\nExercise 4d")
@@ -161,13 +161,13 @@ def main():
     G_2 = create_google_matrix(A_2, 0.02)
     eigenvector_2 = power_method(G_2)
     standard_deviation.append(stdev(eigenvector_2))
-    print_page_dynamic(G_2, eigenvector_2)
+    print_page_dynamic(eigenvector_2)
 
     print("\nAfter changing q to 0.6 from 0.02 we can see the following differences:\n")
     G_2 = create_google_matrix(A_2, 0.6)
     eigenvector_2 = power_method(G_2)
     standard_deviation.append(stdev(eigenvector_2))
-    print_page_dynamic(G_2, eigenvector_2)
+    print_page_dynamic(eigenvector_2)
 
     # Observation
     print("\nFrom the results above and the help of standard deviation we make the following observation.")
@@ -181,27 +181,31 @@ def main():
     # Exercise 4e
     print("\nExercise 4e")
     print("Reminder of page dynamic of our starter matrix.")
-    print_page_dynamic(G, eigenvector)
+    print_page_dynamic(eigenvector)
     print("After changing A[7][10] and A[11][10] to '3',")
     A[7][10] = A[11][10] = 3
     G = create_google_matrix(A)
     eigenvector = power_method(G)
-    print_page_dynamic(G, eigenvector)
+    print_page_dynamic(eigenvector)
     print("We can clearly see that the 11th page has now surpassed the 10th page's dynamic.")
 
     # Exercise 4f
     print("\nExercise 4f")
-    print("After deleting page 10 (A[9])")
+    print("Page 10 (A[9]) currently has a connection to Page 13")
+    print("After deleting page 10")
     # Remove page 10
     connections_from_page_10 = A.pop(9)
-    print(connections_from_page_10)
+    # Remove connections to page 10
     for i in range(len(A)):
         A[i].pop(9)
-    
-    print_matrix(A)
 
     G = create_google_matrix(A)
-    new_eigenvector = power_method(G)    
+    eigenvector = power_method(G)   
+    # Add page 10 to the results as 0 to make the difference clearer
+    eigenvector.insert(9, 0)
+    
+    print_page_dynamic(eigenvector)
+    print("We can see that not only page 13 is affected by that change, but almost all the other pages as well.")
 
 
 # Call main
