@@ -70,8 +70,8 @@ def print_page_dynamic(eigenvector):
     pairs = list(zip(eigenvector, page_index))   # Merge lists to parallel sort
     sorted_pairs = sorted(pairs, key=lambda x: x[0], reverse=True)   # Sort in respect of eigenvector values
     print("\nThese are the most important pages in order:\n")
-    for pair in sorted_pairs:
-        print(f"\tPage {pair[1]+1}: {pair[0]:.4f}")
+    for i, pair in enumerate(sorted_pairs):
+        print(f"\t{i+1}. Page {pair[1]+1}: {pair[0]:.4f}")
 
 
 # Main
@@ -194,7 +194,7 @@ def main():
     print("Page 10 (A[9]) currently has a connection to Page 13")
     print("After deleting page 10")
     # Remove page 10
-    connections_from_page_10 = A.pop(9)
+    A.pop(9)
     # Remove connections to page 10
     for i in range(len(A)):
         A[i].pop(9)
@@ -205,7 +205,9 @@ def main():
     eigenvector.insert(9, 0)
     
     print_page_dynamic(eigenvector)
-    print("We can see that not only page 13 is affected by that change, but almost all the other pages as well.")
+    print("\nWe can see that page 13 has been affected heavily by that change negatively.")
+    print("Page 1 is the page with the most improved rank.")
+    print("The rest of the pages have also been affected.")
 
 
 # Call main
