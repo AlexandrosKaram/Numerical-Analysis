@@ -117,9 +117,7 @@ def newton_raphson_2(f, df_dx, df2_dx2, x, it=MAX_ITERATIONS):
     elif it <= 0:  # Fail condition: Check if maximum number of iterations are reached
         return "Fail", None
 
-    x_next = x - 1 / (
-        df_dx(x) / f(x) - 0.5 * df2_dx2(x) / df_dx(x)
-    )  # Calculate next x by new formula
+    x_next = x - 1 / (df_dx(x) / f(x) - 0.5 * df2_dx2(x) / df_dx(x))  # Calculate next x by new formula
 
     # Recursive step: call Newton Raphson with next guess, decrease iterations
     return newton_raphson_2(f, df_dx, df2_dx2, x_next, it - 1)
@@ -174,11 +172,7 @@ def secant_2(f, a, b, c, it=MAX_ITERATIONS):
         r = f(x[2]) / f(x[1])
         s = f(x[2]) / f(x[0])
 
-        x.append(
-            x[2]
-            - (r * (r - q) * (x[2] - x[1]) + (1 - r) * s * (x[2] - x[0]))
-            / ((q - 1) * (r - 1) * (s - 1))
-        )
+        x.append(x[2] - (r * (r - q) * (x[2] - x[1]) + (1 - r) * s * (x[2] - x[0])) / ((q - 1) * (r - 1) * (s - 1)))
 
         # Check if root is at x
         if abs(f(x[3])) <= TOLERANCE:

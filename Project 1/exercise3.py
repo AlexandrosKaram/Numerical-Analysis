@@ -22,9 +22,7 @@ def main():
     L = le.cholesky(B)
     print("\nFor the matrix B:")
     le.print_matrix(B)
-    print(
-        "The Lower triangular matrix we get by executing the Cholesky decomposition is:"
-    )
+    print("The Lower triangular matrix we get by executing the Cholesky decomposition is:")
     le.print_matrix(L)
 
     # Exercise 3c

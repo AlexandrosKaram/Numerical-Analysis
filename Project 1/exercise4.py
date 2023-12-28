@@ -74,6 +74,21 @@ def print_page_dynamic(eigenvector):
         print(f"\t{i+1}. Page {pair[1]+1}: {pair[0]:.4f}")
 
 
+def prove_stochastic(A, q=0.15):
+    """Proves google matrix is stochastic."""
+    n = len(A)
+    for j in range(n):
+        nj = sum(A[j][i] for i in range(n))   # Sum of connections to j
+        s = 0
+        for i in range(n):
+            s += q/n + A[j][i]*(1-q)/nj
+        if s != 1:   # Sum of j-column not equal to 1
+            print("Google matrix is not stochastic.")
+            break
+    else:   # Loop ended 
+        print("Google matrix indeed is stochastic.")      
+
+
 # Main
 def main():
     # Αdjacency matrix
@@ -97,18 +112,7 @@ def main():
 
     # Exercise 4a
     print("\nExercise 4a")
-    n = len(A)
-    q = 0.15
-    for j in range(n):
-        nj = sum(A[j][i] for i in range(n))   # Sum of connections to j
-        s = 0
-        for i in range(n):
-            s += q/n + A[j][i]*(1-q)/nj
-        if s != 1:   # Sum of j-column not equal to 1
-            print("Google matrix is not stochastic.")
-            break
-    else:   # Loop ended 
-        print("Google matrix indeed is stochastic.")
+    prove_stochastic(A)
 
     # Exercise 4b
     print("\nExercise 4b")
@@ -116,11 +120,12 @@ def main():
     eigenvector = power_method(G)   # Calculate the eigenvector by the power method
     print(f"\nAs we can see the Eigenvector is the one we expected:\n{eigenvector}")
 
-    # Check which pages are the most important
-    print_page_dynamic(eigenvector)
 
     # Exercise 4c
     print("\nExercise 4c")
+    # Check which pages are the most important
+    print_page_dynamic(eigenvector)
+    
     A_2 = [
         [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -152,7 +157,7 @@ def main():
     print("\nAfter updating the A matrix, we can now see that the dynamic in the rankings has changed.")
     print_page_dynamic(eigenvector_2)
     print("\nWe have succesfully shifted the dynamic of Page 1 (A[0]) as from the second to last position it is now the most important page.")
-    print("That was the result of adding pages pointing the the Page 1 but also importantly to Page 4 (which is pointing to Page 1).")
+    print("That was the result of adding pages pointing the the Page 1 but also importantly to Page 5 (which is pointing to Page 1).")
     print("However, the success of our experiment is also due to the fact that the favored pages of the previous rankings (13, 14, 15) are pointing to our new pages.\n")
 
     # Exercise 4d

@@ -31,6 +31,11 @@ def print_matrix(A):
         print("]")
 
 
+def infinity_norm(A):
+    """Function to receive a matrix and calculate its infinite norm."""
+    return max(sum(abs(A[i][j]) for j in range(len(A[0]))) for i in range(len(A)))
+
+
 def swap_rows(matrix, r1, r2):
     """Swaps two rows a matrix and returns the updated matrix."""
     temp_matrix = []
@@ -46,7 +51,7 @@ def swap_rows(matrix, r1, r2):
 
 
 def lu_decomposition(A):
-    """Function that receives a matrix and returns the respective P L and U matrices.
+    """Function that receives a matrix and returns the respective P, L and U matrices.
 
     Parameters:
         A (list): The array to be decomposed.
@@ -161,11 +166,6 @@ def cholesky(A):
     return L
 
 
-def infinity_norm(A):
-    """Function to receive a matrix and calculate its infinite norm."""
-    return max(sum(abs(A[i][j]) for j in range(len(A[0]))) for i in range(len(A)))
-
-
 def gauss_seidel(A, b, max_iterations=1000):
     """Function that executes the Gauss-Seidel method.
 
@@ -187,9 +187,8 @@ def gauss_seidel(A, b, max_iterations=1000):
         for i in range(n):
             s = sum(A[i][j] * x[j] for j in range(n) if j != i)
             x[i] = (b[i] - s) / A[i][i]
-        new_norm = max(
-            abs(x[i]) for i in range(len(x))
-        )  # Calculate infinity norm as maximum absolute value of x
+     
+        new_norm = max(abs(x[i]) for i in range(len(x)))  # Calculate infinity norm as maximum absolute value of x
         # Check if converged
         if abs(new_norm - old_norm) < TOLERANCE:
             return [round(x[i], 4) for i in range(len(x))]
