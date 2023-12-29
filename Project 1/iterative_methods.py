@@ -60,7 +60,7 @@ def newton_raphson(f, df_dx, x, it=MAX_ITERATIONS, print_convergence=False):
     x_next = x - f(x) / df_dx(x)  # Calculate next x by the Newton-Raphson formula
     # Recursive step: call Newton Raphson with next guess, decrease iterations
     if print_convergence:
-        c = abs(abs(f(x)) - abs(f(x_next)))
+        c = abs(f(x) - f(x_next))
         print(f"{MAX_ITERATIONS - it + 1}. {c:.6f} Square: {(c**2):.6f}")
     return newton_raphson(f, df_dx, x_next, it - 1, print_convergence = print_convergence)
 
