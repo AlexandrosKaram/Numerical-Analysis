@@ -83,24 +83,24 @@ def print_results_diversity():
 def compare_variations_to_original(variation_results):
     original_results = (
         (
-            it.bisection(f, -1.4, -1.3),
+            it.bisection(f, -1.5, -1.3),
             it.bisection(f, -0.7, -0.6),
-            it.bisection(f, 0.17, 0.22),
-            it.bisection(f, 0, 46, 0.52),
+            it.bisection(f, 0.1, 0.3),
+            it.bisection(f, 0.4, 0.6),
             it.bisection(f, 1.1, 1.2),
         ),
         (
-            it.newton_raphson(f, df_dx, -1.3),
-            it.newton_raphson(f, df_dx, -1.6),
-            it.newton_raphson(f, df_dx, 0.22),
-            it.newton_raphson(f, df_dx, 0.43),
-            it.newton_raphson(f, df_dx, 1.1),
+            it.newton_raphson(f, df_dx, -1.4),
+            it.newton_raphson(f, df_dx, -0.65),
+            it.newton_raphson(f, df_dx, 0.15),
+            it.newton_raphson(f, df_dx, 0.4),
+            it.newton_raphson(f, df_dx, 1.15),
         ),
         (
-            it.secant(f, -1.4, -1.3),
+            it.secant(f, -1.5, -1.3),
             it.secant(f, -0.7, -0.6),
-            it.secant(f, 0.17, 0.22),
-            it.secant(f, 0.46, 0.52),
+            it.secant(f, 0.1, 0.3),
+            it.secant(f, 0.43, 0.53),
             it.secant(f, 1.1, 1.2),
         ),
     )

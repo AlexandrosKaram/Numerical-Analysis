@@ -1,6 +1,7 @@
-    bisection_results = (it.bisection(f, 0, 1.5), it.bisection(f, 1.5, 3))
-    newton_raphson_results = (
-        it.newton_raphson(f, df_dx, 0, print_convergence=True),
-        it.newton_raphson(f, df_dx, 3, print_convergence=True),
-    )
-    secant_method_results = (it.secant(f, 0, 1.5), it.secant(f, 1.5, 3))
+def f(x):
+    return 14 * x * np.exp(x - 2) - 12 * np.exp(x - 2) - 7 * x**3 + 20 * x**2 - 26 * x + 12
+
+
+# Derivative of function f in respect of x
+def df_dx(x):
+    return -26 + 40 * x - 21 * x**2 + 2 * np.exp(x - 2) * (1 + 7 * x)
